@@ -1,2 +1,5 @@
-.vscode/
 .DS_Store
+
+# Azurite vscode extension
+__azurite_db_blob_extent__.json
+__azurite_db_blob__.json

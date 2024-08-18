@@ -10,7 +10,7 @@ namespace IngredientAnalyzer.AzureFunction
     
 
         [Function("TelegramBotRunner")]
-        public async Task RunAsync([TimerTrigger("*/60 * * * * *")] TimerInfo myTimer)
+        public async Task RunAsync([TimerTrigger("%BotRunnerTriggerTime%")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             
