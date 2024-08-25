@@ -1,7 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using IngredientAnalyzer.AzureFunction.TelegramClient;
+using IngredientAnalyzer.AzureFunction.ServiceConfiguration.MessageHandler;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -9,7 +9,7 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
         
-        services.AddTelegramClient(context);
+        services.AddTelegramMessageHandler(context);
     })
     .Build();
 
