@@ -1,22 +1,39 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Telegram.Bot;
+using IngredientAnalyzer.AzureFunction.Interfaces;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Text.Json;
+using Telegram.Bot.Types;
 
 namespace IngredientAnalyzer.AzureFunction
 {
-    public class TelegramBotRunner(ITelegramBotClient telegramBotClient, ILoggerFactory loggerFactory)
+    public class TelegramBotRunner(IMessageHandler messageHandler, ILogger<TelegramBotRunner> logger)
     {
-        private readonly ILogger<TelegramBotRunner> _logger = loggerFactory.CreateLogger<TelegramBotRunner>();
-    
 
         [Function("TelegramBotRunner")]
-        public async Task RunAsync([TimerTrigger("%BotRunnerTriggerTime%")] TimerInfo myTimer)
+        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
         {
-            _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-            
-            var me = await telegramBotClient.GetMeAsync();
+            logger.LogInformation("HTTP trigger function executing...");
+        
+            var response = request.CreateResponse(System.Net.HttpStatusCode.OK);
 
-            Console.WriteLine($"Hello, World! I am user {me.Id} and my name is {me.FirstName}.");
+            try
+            {
+                var requestBody = await request.ReadAsStringAsync() ?? throw new ArgumentNullException(nameof(request));
+                var update = JsonSerializer.Deserialize<Update>(requestBody);
+                if (update == null)
+                {
+                    logger.LogInformation("Unable to deserialize Update message");
+                }
+
+                await messageHandler.OnUpdateAsync(update);
+            }
+            catch(Exception e)
+            {
+                logger.LogError(e, "Error occurred while executing HTTP trigger function : {message}", e.Message);
+            }
+
+            return  response;
         }
     }
 }

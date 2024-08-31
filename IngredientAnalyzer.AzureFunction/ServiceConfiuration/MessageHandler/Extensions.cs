@@ -11,7 +11,7 @@ public static class Extensions{
     {
         var telegramBotToken = context.Configuration["TelegramBotToken"] 
             ?? throw new InvalidOperationException("TelegramBotToken config value is missing");
-        
+
         services.AddHttpClient("TelegramBotClient")
             .AddTypedClient<ITelegramBotClient>(httpClient => new TelegramBotClient(telegramBotToken, httpClient));
         services.AddSingleton<IMessageHandler, TelegramMessageHandler>();

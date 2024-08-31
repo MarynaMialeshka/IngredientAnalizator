@@ -1,20 +1,26 @@
-using IngredientAnalyzer.AzureFunction.Interfaces;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+using IngredientAnalyzer.AzureFunction.Interfaces;
 
 namespace IngredientAnalyzer.AzureFunction.MessageHandler;
 
-public class TelegramMessageHandler : IMessageHandler
+public class TelegramMessageHandler(ITelegramBotClient telegramBotClient, ILogger<TelegramMessageHandler> logger) : IMessageHandler
 {
-private readonly ILogger<TelegramMessageHandler> _logger;
 
-    public TelegramMessageHandler(TelegramBotClient telegramBotClient, ILogger<TelegramMessageHandler> logger){
+    public async Task OnUpdateAsync(Update? update)
+    {
+        if (update is null || !(update.Message is { } message)) 
+        {
+            logger.LogInformation("Update message is null or cannot be handled.");
+            return;
+        }
+
+        logger.LogInformation("Handling update message... ChatId : {chatId}", message.Chat.Id);
+
+        //get message type and corresponding handler
+        //handle update message
         
-    }
-
-    public async Task OnMessage(Message msg, UpdateType type){
-
+        await  telegramBotClient.SendTextMessageAsync(message.Chat.Id, $"You said: {message.Text}");
     }
 }
