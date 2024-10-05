@@ -10,7 +10,7 @@ public class TelegramMessageHandler(ITelegramBotClient telegramBotClient, ILogge
 
     public async Task OnUpdateAsync(Update? update)
     {
-        if (update is null || !(update.Message is { } message)) 
+        if (update is null || update.Message is not Message message) 
         {
             logger.LogInformation("Update message is null or cannot be handled.");
             return;
