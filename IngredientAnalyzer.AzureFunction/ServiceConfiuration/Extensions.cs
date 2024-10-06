@@ -1,12 +1,16 @@
 using IngredientAnalyzer.AzureFunction.Interfaces;
+using IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
+using IngredientAnalyzer.AzureFunction.JsonSerializer;
+using IngredientAnalyzer.AzureFunction.JsonSerializer.Serializer;
 using IngredientAnalyzer.AzureFunction.MessageHandler;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 
-namespace IngredientAnalyzer.AzureFunction.ServiceConfiguration.MessageHandler;
+namespace IngredientAnalyzer.AzureFunction.ServiceConfiguration;
 
-public static class Extensions{
+public static class Extensions
+{
     public static IServiceCollection AddTelegramMessageHandler(this IServiceCollection services, HostBuilderContext context)
     {
         var telegramBotToken = context.Configuration["TelegramBotToken"] 
@@ -15,6 +19,14 @@ public static class Extensions{
         services.AddHttpClient("TelegramBotClient")
             .AddTypedClient<ITelegramBotClient>(httpClient => new TelegramBotClient(telegramBotToken, httpClient));
         services.AddSingleton<IMessageHandler, TelegramMessageHandler>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddJsonSerializers(this IServiceCollection services)
+    {
+        services.AddSingleton<IJsonSerializer<TelegramBotRunner>, TelegramBotUpdateJsonSerializer>();
+
         return services;
     }
 }

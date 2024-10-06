@@ -2,15 +2,14 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using IngredientAnalyzer.AzureFunction.Interfaces;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Text.Json;
 using Telegram.Bot.Types;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
 
 namespace IngredientAnalyzer.AzureFunction
 {
     public class TelegramBotRunner(IMessageHandler messageHandler, IConfiguration configuration, 
-        IOptions<JsonSerializerOptions> jsonSerializerOptions, ILogger<TelegramBotRunner> logger)
+        IJsonSerializer<TelegramBotRunner> jsonSerializer, ILogger<TelegramBotRunner> logger)
     {
         private const string WebHookTokenHeaderName = "X-Telegram-Bot-Api-Secret-Token";
 
@@ -31,7 +30,8 @@ namespace IngredientAnalyzer.AzureFunction
                 }
                 
                 var requestBody = await request.ReadAsStringAsync() ?? throw new ArgumentNullException(nameof(request));
-                var update = System.Text.Json.JsonSerializer.Deserialize<Update>(requestBody, jsonSerializerOptions.Value);
+
+                var update = jsonSerializer.Deserialize<Update>(requestBody);
                 if (update == null)
                 {
                     logger.LogInformation("Unable to deserialize Update message");
