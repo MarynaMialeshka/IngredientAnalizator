@@ -1,10 +1,9 @@
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
-using IngredientAnalyzer.AzureFunction.Interfaces;
 using Microsoft.Azure.Functions.Worker.Http;
-using Telegram.Bot.Types;
 using Microsoft.Extensions.Configuration;
-using IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
+using Microsoft.Extensions.Logging;
+using Telegram.Bot.Types;
+using IngredientAnalyzer.AzureFunction.Interfaces;
 
 namespace IngredientAnalyzer.AzureFunction
 {

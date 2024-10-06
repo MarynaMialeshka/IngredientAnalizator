@@ -1,11 +1,9 @@
-using IngredientAnalyzer.AzureFunction.Interfaces;
-using IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
-using IngredientAnalyzer.AzureFunction.JsonSerializer;
-using IngredientAnalyzer.AzureFunction.JsonSerializer.Serializer;
 using IngredientAnalyzer.AzureFunction.MessageHandler;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
+using IngredientAnalyzer.AzureFunction.Interfaces;
+using IngredientAnalyzer.AzureFunction.JsonSerializer.Serializer;
 
 namespace IngredientAnalyzer.AzureFunction.ServiceConfiguration;
 

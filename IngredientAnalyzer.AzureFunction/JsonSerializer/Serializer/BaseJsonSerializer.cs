@@ -1,5 +1,5 @@
 using System.Text.Json;
-using IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
+using IngredientAnalyzer.AzureFunction.Interfaces;
 
 namespace IngredientAnalyzer.AzureFunction.JsonSerializer.Serializer;
 

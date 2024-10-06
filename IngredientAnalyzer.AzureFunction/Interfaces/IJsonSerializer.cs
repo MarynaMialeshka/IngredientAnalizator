@@ -1,4 +1,4 @@
-namespace IngredientAnalyzer.AzureFunction.Interfaces.JsonSerializer;
+namespace IngredientAnalyzer.AzureFunction.Interfaces;
 
 public interface IJsonSerializer<TConsumer>{
     T? Deserialize<T>(string json);
